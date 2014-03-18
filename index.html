@@ -206,22 +206,47 @@ class: center, middle
 
 ---
 
-class: middle
+class: center, middle
 
 ## What is the right problem?
 
 --
 
-* #### *Statefulness*
-* #### *Conflict Resolution*
-
---
-
-* #### ***Truth***
+![the truth is out there](http://astrofix.net/wp-content/uploads/2011/05/Optimized-the-truth-is-out-there-x-files-poster.jpg)
 
 ---
 
-name: managing-complexity-1
+class: center, middle
+
+In a config file..
+
+--
+
+.. and a bit of it in the database
+
+--
+
+and some of it in Git..
+
+--
+
+.. in a submodule
+
+--
+
+..ohh, except that bit
+
+--
+
+Only Keith knows where that is...
+
+--
+
+...and he's on Bora Bora surfing this month...
+
+---
+
+class: middle
 
 # Truth...State...
 
@@ -233,7 +258,7 @@ name: managing-complexity-1
 
 ---
 
-name: managing-complexity-2
+class: middle
 
 # Truth...State...
 
@@ -245,120 +270,11 @@ name: managing-complexity-2
 
 ---
 
-# As Easy As It Gets...
-
-![venn-simple](./images/venn-simple.png)
-
----
-
-# Until....
-
-![venn-wat](./images/venn-wat.png)
----
-
-# Suddenly
-
-![venn-argh](./images/venn-argh.png)
-
----
-
-# Result:
-
-![smarties](http://www.vision3d.com/sgwall/images_sgwall/sgcan.jpeg)
-
----
-
-## Bashing Victim #2
-
-![jenkis](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
-
---
-
-* Widely distributed and packaged, runs basically everywhere.
-* More than ***600*** plugins.
-* Apparently quite easy to write plugins.
-
-Jenkins is programatically *installable*, programatically *networkable* (master, and slave).
-
-However the *configuration* is not scriptable, the *list of installed plugins* is not scriptable.
-
---
-
-**Interactions with the Jenkins UI modify the state, and that state change is not recorded <em>anywhere</em>.**
-
---
-
-I'm picking on Jenkins, but the example serves to illustrate the problem.
-
----
-
-# Do we need a Jenkins <strike>package</strike> plugin manager?
-
---
-
-![trollface](http://static.freepik.com/fotos-gratis/trollface_17-403125921.jpg)
-
----
-
-class: center, middle
-
-## [http://www.standalone-sysadmin.com/blog/2014/03/just-what-we-need-another-package-manager/](http://www.standalone-sysadmin.com/blog/2014/03/just-what-we-need-another-package-manager/)
-
----
-
-# Bashing Victim #3
-
-# Graphite
-
-* Widely used
-* Difficult to install
-* Once installed, basically doesn't need to be *configured*
-* Collects any metrics, stores them without drama, basically forever (caveat: downsampling)
-
---
-
-* At least it doesn't have plugins
-* But it doesn't cluster easily...
-
----
-
-# Counter Example
-
-# Solr
-
----
-
-# Counter Example
-
-# <strike>Solr</strike> ElasticSearch
-
-* Easy to install (run a `.jar`, configure via file or CLI flags)
-* Well, and widely packaged
-* Sane defaults
-* No up-front configuration
-* Queryable for current state pretty-much any time
-* Auto-clustering
-* Self-balancing (for the most part)
-
---
-
-```
-$ curl -XPUT 'http://localhost:9200/twitter/tweet/1' -d '{
-  "user" : "kimchy",
-  "post_date" : "2009-11-15T14:12:12",
-  "message" : "trying out Elasticsearch"
-}'
-```
-
-[http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html](http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html)
-
----
-
 # Kinds of complexity...
 
-* Installation Complexity
-* Operational Complexity
-* Data-Lock-In Complexity
+* ## Installation Complexity
+* ## Operational Complexity
+* ## Data Complexity
 
 ---
 
@@ -410,7 +326,7 @@ $ curl -XPUT 'http://localhost:9200/twitter/tweet/1' -d '{
 
 # Comparison?
 
-* ## Data-Lock-In
+* ## Data Complexity
 
   * #### Jenkin
     * **OHH** Some APIs for job build state
@@ -458,30 +374,6 @@ class: center, middle
 
 class: center, middle
 
-# Tools With Plugins
-
---
-
-Jenkins, Vagrant, ElasticSearch, Graphite, CollectD
-
----
-
-class: center, middle
-
-# Tools With Configuration Files
-
---
-
-`*.*`
-
---
-
-[Stack Overflow: At what point does a config file become a programming language?](http://stackoverflow.com/questions/648246)
-
----
-
-class: center, middle
-
 ## *Really the discussion about turing complete configuration languages begins and ends with lisp.*
 
 ---
@@ -500,13 +392,15 @@ class: center, middle
 
 ## What do we need?
 
-We need one way to do things that works well for every use case.
+We need to define our use-cases.
 
-We need one to understand what data structures our tools use.
+We need to agree on some data structures for our next generation of tools.
+
+We need to *understand* what data structures our tools use, and why.
 
 We need tools that allow import, and export.
 
-We need to *think* about how packaging, some of us already do.
+We need to *think* about how packaging, although some of us already do.
 
 We need tools that can grow with us, as we as engineers cultivate our project landscapes.
 
@@ -514,7 +408,7 @@ We need tools that can grow with us, as we as engineers cultivate our project la
 
 class: center, middle
 
-## What am I betting on?
+## What am I betting on in the next 5 years?
 
 ---
 
@@ -522,23 +416,45 @@ class: center, middle
 
 ### Go Lang
 
-Single binaries, cross platform, C-like performance, simple language, good concurrency primitives.
+--
 
-I have a huge amount of respect for Rob Pike.
+I have a man-crush on Rob Pike
+
+--
+
+### [Linux-]Containers
+
+--
+
+Making it easier to setup and burn down scripted environments.
 
 --
 
 ### Renewed interest in DNS, and distributed state engines
 
-DNS-SD and multicast DNS are great weapons for ops neckbeards, but widely under used due to a lack of accessible documentation, and a weird binary UDB protocol. (Hat tip to [Hashi Corp's Serf](http://www.serfdom.io/) in this space)
+--
+
+Hat tip to [Hashi Corp's Serf](http://www.serfdom.io/) in this space
 
 --
 
-### Harrow.io
+### [RAFT](http://raftconsensus.github.io/)
 
-[http://www.harrow.io](https://www.harrow.io/) is my company's soon to launch product which takes what I've mentioned here about Jenkins, in particular, and tries to be a purely Git backed, 100% API driven and driveable, web hooked, simple, and honest.
+--
+
+The PAXOS paper was incomprehensible, RAFT is actually a plesant read.
+
+--
+
+### [http://www.harrow.io](https://www.harrow.io/)
+
+My company's product, launching soon to address some of the peripheral problems of devops.
 <br />
-I'm literally betting my company on it.
+I'm rather literally betting my company on it.
+
+--
+
+### *coin
 
 --
 
