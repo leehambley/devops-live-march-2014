@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      img {
+        width: 100%;
+      }
+      #slide-projects img {
+        width: 200px;
+        vertical-align: middle;
+      }
+      #slide-whoami img {
+        width: 250px;
+      }
+      #slide-loudmouth img {
+        width: 80%;
+      }
+      #slide-hideously-chef img {
+        width: 80%;
+      }
+      .rrdtool-release-list-screenshot img {
+        width: 50%;
+      }
+      .greyed-out {
+        opacity: .4;
+      }
+      .very-greyed-out {
+        opacity: .1;
+      }
+      .red {
+        color: firebrick;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+name: intro
+class: center, middle
+
+# A guided discussion about why we put up with hideously complex tools...
+
+(or why open source tools tend towards complexity)
+
+---
+
+name: whoami
+
+# `whoami`
+
+![Lee Hambley](./images/lee-hambley-avatar.png)
+
+* "Software Wizard"
+* C, Go, Ruby, Javascript, Bash
+* (HTML, CSS, Lua, Python, R.. you get the picture... *whatever works*)
+
+---
+
+name: projects
+
+# Projects
+
+* ## ![Capistrano Logo](http://capistranorb.com/images/CapistranoLogo.png)
+  Widely used, widely <strike>hated</strike> *distrusted* tool. (at least, it feels that way, most of the time)
+
+# Contributions
+
+* ## LibSSH
+  Ability to read-out SSH compiled config, and other (non-merged) changes to make writing a Ruby gem backed by pure-C possible.
+* ## Rails
+  Fixes for date time parameter parsing outside of Rails.
+* ## `lib/pq` (PorstgreSQL driver, Go) &amp; Go Standard Library
+  Fixes for error handling when abusing SQL. (new framework and language, lots of low hanging fruits)
+* ### Lots of other less interesting stuff
+  [ Stalk me on Github ]( https://github.com/leehambley ), [Twitter `@leehambley`](http://twitter.com/leehambley)
+
+---
+
+name: agenda
+
+# Agenda
+
+* Respect
+* CAMS
+* *Hideously* Complex?
+* What kind of complexity?
+* Growing With Your Tools
+
+---
+
+name: respect
+
+# Respect
+
+I want to be absolutely crystal clear.... I love all FOSS.
+
+And I think that people are generally rather disrespectful about FOSS projects.
+
+**I'm going to be calling out a few projects by name.**
+
+---
+
+name: respect-suck
+template: respect
+
+# because they suck...
+
+---
+
+name: respect-suck-because
+template: respect-suck
+
+# because they...
+
+* werent't invented here
+* we didn't read the docs
+* it was written in July 16, 1999 .red[*]
+* it's written in .thing[Java], and ... .thing[Java] sucks too
+* it's difficult to install
+* my distribution doesn't have a recent version in the package manager
+* the tool has it's own package manager
+
+---
+
+template: respect-suck-because
+
+[ `RRDTool` Release History, Wikipedia ]( http://en.wikipedia.org/wiki/RRDtool#Release_history )
+
+.rrdtool-release-list-screenshot[![MRTG Done Right!](./images/rrdtool-release-list-mrtg-done-right.png)]
+
+---
+
+name: loudmouth
+
+# Maintaining FOSS
+
+You develop a thick skin and try to get used to reading things like this:
+
+![capistrano-grief](./images/tweet-capistrano-grief.png)
+![capistrano-grief](./images/tweet-horrible-documentation.png)
+
+---
+
+name: cams
+
+# CAMS
+
+* ### Culture
+
+* ### Automation
+
+* ### Measurement
+
+* ### Sharing
+
+---
+
+name: am
+
+# CAMS
+
+* ### .very-greyed-out[ Culture ]
+
+* ### Automation
+
+* ### .greyed-out[ Measurement ]
+
+* ### .very-greyed-out[ Sharing ]
+
+---
+
+name: hideously-complex
+
+# Recognise this?
+
+![attribute precedence part 1](http://docs.opscode.com/_images/overview_chef_attributes_precedence.png)
+![attribute precedence part 2](http://docs.opscode.com/_images/overview_chef_attributes_table.png)
+
+---
+
+name: hideously-chef
+
+# Yeah... it's Chef.
+
+![chef-attribute-precedence](./images/chef-attribute-precedence.png)
+[ http://docs.opscode.com/chef_overview_attributes.html#attribute-precedence ]( http://docs.opscode.com/chef_overview_attributes.html#attribute-precedence )
+
+</textarea>
+
+    <script src="http://gnab.github.io/remark/downloads/remark-0.6.1.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
