@@ -37,8 +37,20 @@
       .very-greyed-out {
         opacity: .1;
       }
-      .red {
+      .asterisk {
         color: firebrick;
+      }
+      .dot:before {
+        content: "• ";
+      }
+      .dot.red:before {
+        color: red;
+      }
+      .dot.yellow:before {
+        color: yellow;
+      }
+      .dot.green:before {
+        color: green;
       }
     </style>
   </head>
@@ -86,15 +98,14 @@ name: projects
 
 ---
 
-name: agenda
+name: loudmouth
 
-# Agenda
+# Maintaining FOSS
 
-* Respect
-* CAMS
-* *Hideously* Complex?
-* What kind of complexity?
-* Growing With Your Tools
+You develop a thick skin and try to get used to reading things like this:
+
+![capistrano-grief](./images/tweet-capistrano-grief.png)
+![capistrano-grief](./images/tweet-horrible-documentation.png)
 
 ---
 
@@ -122,7 +133,7 @@ And I think that people are generally rather disrespectful about FOSS projects.
 
 * werent't invented here
 * we didn't read the docs
-* it was written in July 16, 1999 .red[*]
+* it was written in July 16, 1999 .asterisk[*]
 * it's written in .thing[Java], and ... .thing[Java] sucks too
 * it's difficult to install
 * my distribution doesn't have a recent version in the package manager
@@ -133,17 +144,6 @@ And I think that people are generally rather disrespectful about FOSS projects.
 [ `RRDTool` Release History, Wikipedia ]( http://en.wikipedia.org/wiki/RRDtool#Release_history )
 
 .rrdtool-release-list-screenshot[![MRTG Done Right!](./images/rrdtool-release-list-mrtg-done-right.png)]
-
----
-
-name: loudmouth
-
-# Maintaining FOSS
-
-You develop a thick skin and try to get used to reading things like this:
-
-![capistrano-grief](./images/tweet-capistrano-grief.png)
-![capistrano-grief](./images/tweet-horrible-documentation.png)
 
 ---
 
@@ -276,7 +276,7 @@ name: managing-complexity-2
 
 * Widely distributed and packaged, runs basically everywhere.
 * More than ***600*** plugins.
-* Extensible via plugins.
+* Apparently quite easy to write plugins.
 
 Jenkins is programatically *installable*, programatically *networkable* (master, and slave).
 
@@ -312,6 +312,8 @@ class: center, middle
 
 * Widely used
 * Difficult to install
+* Once installed, basically doesn't need to be *configured*
+* Collects any metrics, stores them without drama, basically forever (caveat: downsampling)
 
 --
 
@@ -354,15 +356,257 @@ $ curl -XPUT 'http://localhost:9200/twitter/tweet/1' -d '{
 
 # Kinds of complexity...
 
-* Investment Complexity
+* Installation Complexity
 * Operational Complexity
 * Data-Lock-In Complexity
+
+---
+
+# Comparison?
+
+* ## Installation Complexity
+
+  * #### Jenkins
+    * **YAY** Low complexity, single `.jar` runnable without any special config
+    * **YAY** Widely, and well packaged, essentially every OS and platform
+    * **OHH** Pluigins! Easy to install, but then you are meddling with state
+  * #### Graphite
+    * **YAY** No plugins!
+    * **OHH** Python, speaking as a Ruby developer, and because if your app runs on Python, you'll have more problems, or have to use `pvm` or something to isolate your operational, and development Pyton needs
+    * **OHH** Three pieces, plus whichever frontend you decide to use, the bundled one is terrible
+    * **ARGH** Tricky to install, hundreds of Mb of deps, hundreds and hundreds and files
+  * #### ElasticSearch
+    * **YAY** Index config all done via HTTP API (or binary, Java protocol)
+    * **YAY** Low complexity, single `.jar` runnable without any special config
+    * **YAY** Widely, and well packaged, essentially every OS and platform
+    * **OHH** Pluigins! Easy to install, but then you are meddling with state
+
+--
+
+.asterisk[*] I really like ElasticSearch, and my company is releasing a product that fulfils a deployment niche poorly, and unintionally addressed by Jenkins
+
+---
+
+# Comparison?
+
+* ## Operational Complexity
+
+  * #### Jenkins
+    * **ARGH** Job config done via web forms... but one can still drop `.xml` files on disk, and restart Jenkins to pick them up, nothing to stop you editing them in the web interface
+  * #### Graphite
+    * **YAY** No plugins!
+    * **YAY** Graphite will accept any metrics, from any host that you throw at it, no-host list manifest needed!
+    * **OHH** But, the retention rates have to be defined up front, and aren't as simple as they could be
+  * #### ElasticSearch
+    * **YAY** It uses multicast DNS and dns-sd ([http://www.dns-sd.org/](http://www.dns-sd.org/)) to configure it's own load balancing cluster, automatically!
+    * **OHH** Changing a mapping for a given field is tricky, but that's more or less because it's tricky all the way down to Lucene, and the better way to handle it is to recreate a new index version, and alias it. Much like the 'current' symlink which links to a timestamped release folder in Capistrano deployed environments.
+    * **ARGH** Some surprising bugs arising from Lucene (e.g timeouts *can't* apply to the highligh matching phase of queries, leading to never-ending queries)
+
+--
+
+.asterisk[*] That's _less_ fun when sharing an office with someone who is running integration tests, and ElasticSearch decides that _you_ are their slave, and your database seems to be taking it's contents from the _I'm Feeling Lucky_ button at Google.
+
+---
+
+# Comparison?
+
+* ## Data-Lock-In
+
+  * #### Jenkin
+    * **OHH** Some APIs for job build state
+    * **ARGH** No real APIs for getting all job build stauts, output, config, changes, etc, etc, et
+  * #### Graphite
+    * **ARGH** You can get the data for any given graph as JSON, or CSV via the `?format=` query string parameter, but no real *export* API.
+    * ... that is, no way to enumerate all metrics, all hosts, all time series, ranges, events, etc.
+    * **OHH** No concept of *Events*, the workaround for tagging is the `drawAsInfinite()` function.
+    * **OHH** Data is down sampled, eventaully, but at least you can configure when and to what resolution, the downsampling also compromises exportability.
+  * #### ElasticSearch
+    * **YAY** No data lost, ever. ElasticSearch keeps the source document posted forever.
+    * **YAY** Built in backup and restore and snapshotting API, alias support for quick database swaps.
+
+---
+
+class: center, middle
+
+## Lee, you are blushing...
+
+I ***love*** ElasticSearch's ease of use, although I might also have named RabbitMQ in most of the previous slides.
+
+---
+
+class: center, middle
+
+# We have complicated jobs.
+
+--
+
+(and it's getting more complicated all the time)
+
+---
+
+class: center, middle
+
+## Running application has become an order of magnitude more complicated than *building* it.
 
 ---
 
 class: center, middle
 
 ![I <3 Randal Monroe ](http://imgs.xkcd.com/comics/manuals.png)
+
+---
+
+class: center, middle
+
+# Tools With Plugins
+
+--
+
+Jenkins, Vagrant, ElasticSearch, Graphite, CollectD
+
+---
+
+class: center, middle
+
+# Tools With Configuration Files
+
+--
+
+`*.*`
+
+--
+
+[Stack Overflow: At what point does a config file become a programming language?](http://stackoverflow.com/questions/648246)
+
+---
+
+class: center, middle
+
+## *Really the discussion about turing complete configuration languages begins and ends with lisp.*
+
+---
+
+class: center, middle
+
+## Tools without the concept of distribution
+
+--
+
+We need to find alternatives, in 2014 concurrent, distributed computing is absoltuely the new norm.
+
+---
+
+class: center, middle
+
+## What do we need?
+
+We need one way to do things that works well for every use case.
+
+We need one to understand what data structures our tools use.
+
+We need tools that allow import, and export.
+
+We need to *think* about how packaging, some of us already do.
+
+We need tools that can grow with us, as we as engineers cultivate our project landscapes.
+
+---
+
+class: center, middle
+
+## What am I betting on?
+
+---
+
+class: center, middle
+
+### Go Lang
+
+Single binaries, cross platform, C-like performance, simple language, good concurrency primitives.
+
+I have a huge amount of respect for Rob Pike.
+
+--
+
+### Renewed interest in DNS, and distributed state engines
+
+DNS-SD and multicast DNS are great weapons for ops neckbeards, but widely under used due to a lack of accessible documentation, and a weird binary UDB protocol. (Hat tip to [Hashi Corp's Serf](http://www.serfdom.io/) in this space)
+
+--
+
+### Harrow.io
+
+[http://www.harrow.io](https://www.harrow.io/) is my company's soon to launch product which takes what I've mentioned here about Jenkins, in particular, and tries to be a purely Git backed, 100% API driven and driveable, web hooked, simple, and honest.
+<br />
+I'm literally betting my company on it.
+
+--
+
+(we're already proving that this can work, blockchains building a trust and influence based version of Git that is more suited to system concensus rather than human intent)
+
+---
+
+class: center, middle
+
+---
+
+class: center, middle
+
+# `#lazyweb`
+
+---
+
+```
+$ ./time-series-database
+> Listening on 8181
+```
+
+I need this, I want this tool for every shell script, import job, `dd`, backup restoration, and whatever else that I write 5 times per day.
+
+I want an API like:
+
+```
+$ tsdrecord some.event 123
+```
+
+--
+
+How should `tsdrecord` know where there's a server?
+
+--
+
+By using dns-sd.
+
+--
+
+We should be able to able to do something like this:
+
+```
+$ curl localhost:8081/metrics
+{.... who knows ....}
+```
+
+--
+
+Because we could expose a UDP and TCP binary protocol, and a JSON HTTP protocol all on the same port, and let the client figure out what it wants to have.
+
+--
+
+And I'd like to use the same tool, all the way up until I need to hire a dedicated ops team, who can manage that for me.
+
+--
+
+Eventually, I'll probably write it...
+
+---
+
+class: center, middle
+
+**If I ever stop complaining**
+
+---
+
+<script type="text/javascript" src="//www.google.com/trends/embed.js?hl=en-US&q=elasticsearch,+solr,+lucene&cmpt=q&content=1&cid=TIMESERIES_GRAPH_0&export=5&w=500&h=330"></script>
 
 </textarea>
 
