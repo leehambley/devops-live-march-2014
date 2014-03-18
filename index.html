@@ -129,9 +129,7 @@ And I think that people are generally rather disrespectful about FOSS projects.
 
 --
 
-# because they...
-
-* werent't invented here
+* they werent't invented here
 * we didn't read the docs
 * it was written in July 16, 1999 .asterisk[*]
 * it's written in .thing[Java], and ... .thing[Java] sucks too
@@ -270,7 +268,9 @@ class: middle
 
 ---
 
-# Kinds of complexity...
+class: middle
+
+# Types of complexity...
 
 * ## Installation Complexity
 * ## Operational Complexity
@@ -278,7 +278,7 @@ class: middle
 
 ---
 
-# Comparison?
+class: middle
 
 * ## Installation Complexity
 
@@ -303,7 +303,7 @@ class: middle
 
 ---
 
-# Comparison?
+class: middle
 
 * ## Operational Complexity
 
@@ -324,7 +324,7 @@ class: middle
 
 ---
 
-# Comparison?
+class: middle
 
 * ## Data Complexity
 
@@ -358,6 +358,18 @@ class: center, middle
 
 ---
 
+![logjam](./images/logjam-masked.png)
+
+This is LogJam, a FOSS tool written by Stefan Kaes, chief architect at *probably* one of the biggest Rails sites in the world.
+
+The Rails apps at that company are built with a pretty solid SOA but require forty different variables to be correctly set for *each environment* to reach their various REST API peers and databases, etc.
+
+The app that produced the stats above is *4,000* lines of Ruby, and **83,000** lines of YAML.
+
+* [https://github.com/search?q=%40skaes+logjam](https://github.com/search?q=%40skaes+logjam)
+
+---
+
 class: center, middle
 
 ![I <3 Randal Monroe ](http://imgs.xkcd.com/comics/manuals.png)
@@ -366,35 +378,7 @@ class: center, middle
 
 class: center, middle
 
-## *Really the discussion about turing complete configuration languages begins and ends with lisp.*
-
----
-
-class: center, middle
-
-## Tools without the concept of distribution
-
---
-
-We need to find alternatives, in 2014 concurrent, distributed computing is absoltuely the new norm.
-
----
-
-class: center, middle
-
 ## What do we need?
-
-We need to define our use-cases.
-
-We need to agree on some data structures for our next generation of tools.
-
-We need to *understand* what data structures our tools use, and why.
-
-We need tools that allow import, and export.
-
-We need to *think* about how packaging, although some of us already do.
-
-We need tools that can grow with us, as we as engineers cultivate our project landscapes.
 
 ---
 
@@ -410,7 +394,7 @@ class: center, middle
 
 --
 
-I have a man-crush on Rob Pike
+Rob Pike's work fascinates me. I am in awe of how he makes everything look effortless.
 
 --
 
@@ -450,11 +434,15 @@ I'm rather literally betting my company on it.
 
 --
 
-(we're already proving that this can work, blockchains building a trust and influence based version of Git that is more suited to system concensus rather than human intent)
+We're already proving that this can work, blockchains building a trust and influence based version of Git that is more suited to system concensus rather than human intent.
+
+Not just Bitcoin and altcoint with their proof of work, and finite resources, but also the BitTorrent distributed discovery protocols and hash tables, and "public secret" networks such as BTSync.
 
 ---
 
 class: center, middle
+
+# Is there one project where we can shoehorn these ideas in, and build something useful?
 
 ---
 
@@ -469,9 +457,9 @@ $ ./time-series-database
 > Listening on 8181
 ```
 
-I need this, I want this tool for every shell script, import job, `dd`, backup restoration, and whatever else that I write 5 times per day.
+I want this tool for every shell script, import job, `dd`, backup restoration, and whatever else I write, and throw away a few times a week.
 
-I want an API like:
+I imagine an API like:
 
 ```
 $ tsdrecord some.event 123
@@ -500,6 +488,20 @@ Because we could expose a UDP and TCP binary protocol, and a JSON HTTP protocol 
 
 --
 
+We would also be able to do this:
+
+```
+$ tsdweb
+> Listening on 8282
+$ open localhost:8282
+```
+
+--
+
+And see a web interface were we could build graphs, and explore it easily, alternative frontends could use dns-sd to look for compatible backends, and make them available with alternative UIs. In a perfect world, imagine the UI could use a `dns-sd` discovered store, or fallback to Git on disk.
+
+--
+
 And I'd like to use the same tool, all the way up until I need to hire a dedicated ops team, who can manage that for me.
 
 --
@@ -510,7 +512,7 @@ Eventually, I'll probably write it...
 
 class: center, middle
 
-**If I ever stop complaining**
+# If <sup>I <sup>ever <sup>stop <sup>complaining</sup></sup></sup></sup>
 
 ---
 
