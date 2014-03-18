@@ -5,8 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
+      cite:before {
+        content: "— ";
+        color: silver;
+      }
+      cite {
+        color: silver;
+      }
       img {
-        width: 100%;
+        width: 80%;
       }
       #slide-projects img {
         width: 200px;
@@ -101,17 +108,15 @@ And I think that people are generally rather disrespectful about FOSS projects.
 
 **I'm going to be calling out a few projects by name.**
 
----
+--
 
-name: respect-suck
-template: respect
+(it's fair to say they are victims of their own success, and we've all run into them in the wild, and benefited, even if we didn't enjoy it)
+
+--
 
 # because they suck...
 
----
-
-name: respect-suck-because
-template: respect-suck
+--
 
 # because they...
 
@@ -123,9 +128,7 @@ template: respect-suck
 * my distribution doesn't have a recent version in the package manager
 * the tool has it's own package manager
 
----
-
-template: respect-suck-because
+--
 
 [ `RRDTool` Release History, Wikipedia ]( http://en.wikipedia.org/wiki/RRDtool#Release_history )
 
@@ -187,6 +190,179 @@ name: hideously-chef
 
 ![chef-attribute-precedence](./images/chef-attribute-precedence.png)
 [ http://docs.opscode.com/chef_overview_attributes.html#attribute-precedence ]( http://docs.opscode.com/chef_overview_attributes.html#attribute-precedence )
+
+---
+
+name: complex-solutions-complex-problems
+class: center, middle
+
+## Do complex problems demand complex solutions?
+
+---
+
+class: center, middle
+
+## I trust that we're just solving the wrong problems.
+
+---
+
+class: middle
+
+## What is the right problem?
+
+--
+
+* #### *Statefulness*
+* #### *Conflict Resolution*
+
+--
+
+* #### ***Truth***
+
+---
+
+name: managing-complexity-1
+
+# Truth...State...
+
+> Remember (old-timer?) Linux user typing commands into terminal that goes and mutates the state of the Linux machine. They'll go and stop a process, change configuration file and start the process again. They're the one connecting to the machine and making sure the state of the Linux machine is mutated correctly. Let's call this method Imperative Configuration.
+>
+> <cite>Domen Kožar</cite>
+
+[https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/](https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/)
+
+---
+
+name: managing-complexity-2
+
+# Truth...State...
+
+> Remember (old-timer?) Linux user **typing** commands into terminal that goes and **mutates the state** of the Linux machine. They'll go and stop a process, change **configuration file** and start the process again. They're the one connecting to the machine and **making sure the state of the Linux machine is mutated correctly**. Let's call this method **Imperative Configuration**.
+>
+> <cite>Domen Kožar</cite>
+
+[https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/](https://www.domenkozar.com/2014/03/11/why-puppet-chef-ansible-arent-good-enough-and-we-can-do-better/)
+
+---
+
+# As Easy As It Gets...
+
+![venn-simple](./images/venn-simple.png)
+
+---
+
+# Until....
+
+![venn-wat](./images/venn-wat.png)
+---
+
+# Suddenly
+
+![venn-argh](./images/venn-argh.png)
+
+---
+
+# Result:
+
+![smarties](http://www.vision3d.com/sgwall/images_sgwall/sgcan.jpeg)
+
+---
+
+## Bashing Victim #2
+
+![jenkis](http://jenkins-ci.org/sites/default/files/jenkins_logo.png)
+
+--
+
+* Widely distributed and packaged, runs basically everywhere.
+* More than ***600*** plugins.
+* Extensible via plugins.
+
+Jenkins is programatically *installable*, programatically *networkable* (master, and slave).
+
+However the *configuration* is not scriptable, the *list of installed plugins* is not scriptable.
+
+--
+
+**Interactions with the Jenkins UI modify the state, and that state change is not recorded <em>anywhere</em>.**
+
+--
+
+I'm picking on Jenkins, but the example serves to illustrate the problem.
+
+---
+
+# Do we need a Jenkins <strike>package</strike> plugin manager?
+
+--
+
+![trollface](http://static.freepik.com/fotos-gratis/trollface_17-403125921.jpg)
+
+---
+
+class: center, middle
+
+## [http://www.standalone-sysadmin.com/blog/2014/03/just-what-we-need-another-package-manager/](http://www.standalone-sysadmin.com/blog/2014/03/just-what-we-need-another-package-manager/)
+
+---
+
+# Bashing Victim #3
+
+# Graphite
+
+* Widely used
+* Difficult to install
+
+--
+
+* At least it doesn't have plugins
+* But it doesn't cluster easily...
+
+---
+
+# Counter Example
+
+# Solr
+
+---
+
+# Counter Example
+
+# <strike>Solr</strike> ElasticSearch
+
+* Easy to install (run a `.jar`, configure via file or CLI flags)
+* Well, and widely packaged
+* Sane defaults
+* No up-front configuration
+* Queryable for current state pretty-much any time
+* Auto-clustering
+* Self-balancing (for the most part)
+
+--
+
+```
+$ curl -XPUT 'http://localhost:9200/twitter/tweet/1' -d '{
+  "user" : "kimchy",
+  "post_date" : "2009-11-15T14:12:12",
+  "message" : "trying out Elasticsearch"
+}'
+```
+
+[http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html](http://www.elasticsearch.org/guide/en/elasticsearch/reference/master/modules-snapshots.html)
+
+---
+
+# Kinds of complexity...
+
+* Investment Complexity
+* Operational Complexity
+* Data-Lock-In Complexity
+
+---
+
+class: center, middle
+
+![I <3 Randal Monroe ](http://imgs.xkcd.com/comics/manuals.png)
 
 </textarea>
 
